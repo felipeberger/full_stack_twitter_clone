@@ -6,7 +6,7 @@ var twitterLogo = require('./pictures/twitterlogo')
 
 const Header = (props) => {
     return (
-        <nav className="navbar fixed-top navbar-light bg-white" >
+        <nav className="navbar fixed-top navbar-light bg-white pb-0" >
             <div className="container-fluid">
                 <Router>
                     <Link className="navbar-brand" to="/"><img src={twitterLogo} width="40" height="40" /></Link>
