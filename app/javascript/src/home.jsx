@@ -1,15 +1,21 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import Header from './header.jsx'
+import LanguageSelect from './languageSelect.jsx'
 
 import './home.scss';
+import './general.scss';
 
-const Home = props => (
+
+const Home = (props) => (
   <div>Home page</div>
 )
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <Home />,
+    // <Header navComponent="testing navbar" />,
+    <Header navComponent={<LanguageSelect />} />,
     document.body.appendChild(document.createElement('div')),
+    
   )
 })
