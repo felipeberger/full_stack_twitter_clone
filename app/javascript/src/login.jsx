@@ -12,12 +12,46 @@ import background5 from './pictures/background5.jpg'
 import './general.scss';
 import './login.scss';
 
+var opacity = 0
+var picNumber = 1
+var backgroundPic = background1
+
+setInterval(()=>{
+    
+    switch(picNumber){
+        case 1:
+            backgroundPic = background2
+            picNumber += 1
+            break;
+        case 2:
+            backgroundPic = background3
+            picNumber += 1
+            break;
+        case 3:
+            backgroundPic = background4
+            picNumber += 1
+            break;
+        case 4:
+            backgroundPic = background5
+            picNumber += 1
+            break;
+        case 5:
+            backgroundPic = background1
+            picNumber = 1
+            break;
+    }
+
+    $('#background-image').fadeOut(1000, "swing", ()=>{
+        $('#background-image').css('backgroundImage', `url(${backgroundPic})`)
+    } ).fadeIn(1000);    
+    
+}, 8000)
 
 const Login = (props) => {
     return (
         <>
         <Header navComponent={<LanguageSelect />}/>
-        <div className="background" style={{backgroundImage: `url(${background5})`}}>
+        <div className="background" id="background-image" style={{backgroundImage: `url(${background5})`}}>
             <div className="container mt-4 pt-4">
                 <div className="row main">
                     <div className="col-1"></div>
