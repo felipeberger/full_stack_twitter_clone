@@ -1,7 +1,7 @@
 .background{
-    margin-top: -5.6vh;
+    margin-top: -3vh;
     background-repeat: no-repeat;
-    background-size: 110%;
+    background-size: cover;
     min-height: 100vh;
 
 }
@@ -9,3 +9,14 @@
 .main{
     padding-top: 15vh;
 }
+
+#login-btn {
+    background-color: #337AB7;
+    border-color: #337AB7;
+}
+
+#signup-btn {
+    background-color: #ffac33;
+    border-color: #ffac33;
+}
+
