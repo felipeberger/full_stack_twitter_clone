@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'static_pages#home'
+  root 'static_pages#login'
 
   namespace :api do
     # USERS
@@ -18,5 +18,6 @@ Rails.application.routes.draw do
     get  '/tweets/search/:keyword' => 'tweets#search'
   end
 
-  get '*path' => 'static_pages#home'
+  get 'home' => 'static_pages#home'
+  get '*' => 'static_pages#login'
 end

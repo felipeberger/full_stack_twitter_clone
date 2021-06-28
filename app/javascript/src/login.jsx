@@ -2,6 +2,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Header from './header.jsx'
 import LanguageSelect from './languageSelect.jsx'
+import { createNewUser } from './requests/user.js'
+import { createSession } from './requests/sessions.js'
 
 import background1 from './pictures/background1.jpg'
 import background2 from './pictures/background2.jpg'
@@ -12,7 +14,8 @@ import background5 from './pictures/background5.jpg'
 import './general.scss';
 import './login.scss';
 
-var opacity = 0
+// background picture rotation
+
 var picNumber = 1
 var backgroundPic = background1
 
@@ -41,11 +44,66 @@ setInterval(()=>{
             break;
     }
 
-    $('#background-image').fadeOut(1000, "swing", ()=>{
+    $('#background-image').fadeOut(1000, "swing", () => {
         $('#background-image').css('backgroundImage', `url(${backgroundPic})`)
     } ).fadeIn(1000);    
     
-}, 8000)
+}, 10000);
+
+// functions 
+
+
+// button listeners
+
+$(document).on('click', '#signup-btn', function (e) {
+    e.preventDefault();
+    let username = $('#signup-username').val();
+    let email = $('#signup-email').val();
+    let password = $('#signup-password').val();
+
+    if (username != '' || email != '' || password != '') {
+        createNewUser(username, password, email, (data) => {
+            if (data.success) {
+                createSession(username, password, ()=>{
+                    location.href = '/home'
+                }, ()=>{
+                    console.log('did not authenticate')
+                })
+            } else {
+                $('#signup-username').val('');
+                $('#signup-email').val('');
+                $('#signup-password').val('');
+                window.alert("username or email invalid or already in use")
+            }
+                
+        }, () => {
+            console.log("did not work")
+            
+        }) 
+    } 
+})
+
+$(document).on('click', '#login-btn', function (e) {
+    e.preventDefault();
+    let username = $('#login-username').val();
+    let password = $('#login-password').val();
+
+    if (username != '' || password != '') {
+        createSession(username, password, (data)=>{
+            if (data.success) {
+            location.href = '/home'
+            } else {
+                $('#login-username').val('');
+                $('#login-password').val('');
+                window.alert("username or email invalid")
+            }
+        }, ()=>{
+            console.log('did not authenticate')
+        })
+    } 
+
+    // console.log(createSession(username, password))
+})
 
 const Login = (props) => {
     return (
@@ -74,7 +132,9 @@ const Login = (props) => {
                                 <div className="form-group rounded pt-3">
                                     <div className="row pb-2">
                                         <div className="col-12">
-                                            <input type="text" className="form-control" placeholder="Username" />
+                                            <input type="text" className="form-control" 
+                                            id="login-username"
+                                            placeholder="Username" />
                                         </div>
                                     </div>                        
                                     <div className="row">
@@ -82,7 +142,7 @@ const Login = (props) => {
                                             <input type="password" className="form-control" id="login-password" placeholder="Password" />
                                         </div>
                                         <div className="col-4">
-                                            <button className="btn btn-primary float-right ml-5" id="login-btn">Log In</button>
+                                            <button type="submit" className="btn btn-primary float-right ml-5" id="login-btn">Log In</button>
                                         </div>                
                                     </div>
                                     <div className="row pt-2">
@@ -102,17 +162,14 @@ const Login = (props) => {
                             <form>
                                 <div className="form-group rounded pt-3">
                                     <p><strong>New to Twitter?</strong><span className="text-secondary"> Sign up</span></p>
-                                    <input type="text" className="form-control mb-2" placeholder="Username" />
+                                    <input type="text" className="form-control mb-2" id="signup-username" placeholder="Username" />
                                     <input type="email" className="form-control mb-2" id="signup-email" placeholder="Email" />
                                     <input type="password" className="form-control mb-2" id="signup-password" placeholder="Password" />
-                                    <button className="btn rounded float-right" id="signup-btn"><strong>Sign up for Twitter</strong></button>
+                                    <button type="submit" className="btn rounded float-right" id="signup-btn"><strong>Sign up for Twitter</strong></button>
                                         
                                 </div>
                             </form>
                         </div>
-
-                    
-                        
                     </div>
                     
                     <div className="col-2"></div>
