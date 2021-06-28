@@ -48,12 +48,12 @@ setInterval(()=>{
         $('#background-image').css('backgroundImage', `url(${backgroundPic})`)
     } ).fadeIn(1000);    
     
-}, 10000);
+}, 12000);
 
 // functions 
 
 
-// button listeners
+// button listeners / event handlers
 
 $(document).on('click', '#signup-btn', function (e) {
     e.preventDefault();
@@ -91,7 +91,7 @@ $(document).on('click', '#login-btn', function (e) {
     if (username != '' || password != '') {
         createSession(username, password, (data)=>{
             if (data.success) {
-            location.href = '/home'
+                location.href = '/home'
             } else {
                 $('#login-username').val('');
                 $('#login-password').val('');
