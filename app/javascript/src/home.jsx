@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import ReactDOM from 'react-dom'
+import ReactDOM, { render } from 'react-dom'
 import Header from './header.jsx'
 import LanguageSelect from './languageSelect.jsx'
 import MenuSelect from './homeMenu.jsx'
@@ -20,76 +20,80 @@ let followersCount = 0
 $(document).off().on('click', '#post-tweet', (e)=>{
   e.preventDefault()
   let tweet = $('#tweet-input').val()
-  $('#tweet-input').val('')
-  $('#post-tweet').prop('disabled', true)
 
-  createTweet(tweet, ()=>{
-    $('#post-tweet').prop('disabled', false)
-  }, ()=>{
-    window.alert('something went wrong, try again')
-    $('#post-tweet').prop('disabled', false)
-  })
+  if (tweet.length > 0) {
+    $('#tweet-input').val('')
+    $('#post-tweet').prop('disabled', true)
+
+    createTweet(tweet, ()=>{
+      $('#post-tweet').prop('disabled', false)
+      }, ()=>{
+        window.alert('something went wrong, try again')
+        $('#post-tweet').prop('disabled', false)
+    })
+
+  } else {
+    window.alert('empty tweets are not allowed')
+  }
 })
+
+
 
 // functions
 
 const Tweet = (props) => {
   return (
     <>
-    <div className='tweet col-12'>
+    <div className='tweet col-12 pt-2 border top border bottom bg-light' id={props.id}>
       <a className='tweet-username' href="">{props.username} <span className="text-secondary tweet-screenName">@{props.username}</span></a>
       <a className="delete-tweet float-right" href="">Delete</a>
-      <p>{props.message}</p>
+      <p className="pt-1">{props.message}</p>
     </div>
     </>
     )
 }
 
-const populateTweets = () => {
+// const PopulateTweets = () => {
+//   const [tweets, setTweets] = useState([])
 
-  var tweets = []
+//   getTweets((data)=>{
+//     setTweets(data.tweets)
+//     tweets.reverse()
+//   })
 
-  getTweets((data)=>{
-    tweets = data.tweets.map(function(tweet){
-      return (
-        <Tweet username={tweet.username} message={tweet.message} />
-      )
-    })
-  })
+//   console.log(tweets)
 
-  // tweets.reverse()
+//   // tweets = data.tweets.map((tweet) =>{ })
 
-  return tweets.reverse()
-
-}
-
-
-// getTweets((data)=>{
-//   console.log(data)
-// })
-
-// if ($('.static_pages.index').length > 0) {
-//   indexTasks(function (response) {
-//     var htmlString = response.tasks.map(function(task) {
-//       return "<div class='col-12 mb-3 p-2 border rounded task clearfix' data-id='" + task.id + "'> \
-//       <input type='checkbox' class='mark-complete mr-2'>" + task.content + "\
-//       <button class='delete rounded float-right " + task.completed + "' data-id='" + task.id + "'>Remove</button></div>";
-//     });
-
-//     $("#tasks").html(htmlString);
-//   });
-// };
+//   return (
+//     <p>{tweets}</p> 
+//   )
+// }
 
 const Home = (props) => {
   const [username, setName] = useState('')
+  const [tweets, setTweets] = useState([])
   
   useEffect(()=>{
     areTheyAuthenticated((data)=>{
       setName(data.username)
     })
-    console.log(populateTweets)
-
   })
+
+  useEffect(()=>{
+    getTweets((data)=>{
+      console.log(data)
+      var tweetLength = data.tweets.length
+      var tweetsArray = []
+
+      for (let i=0; i < tweetLength; i++) {
+        tweetsArray.unshift(<Tweet id={data.tweets[i].id} username={data.tweets[i].username} message={data.tweets[i].message} />)
+      }
+
+      setTweets(tweetsArray)
+      console.log(tweetsArray)
+    })
+  }, [tweets.length])
 
   return (
     <>
@@ -138,7 +142,7 @@ const Home = (props) => {
                 <button className="rounded btn-primary px-2 ml-3 mr-2 my-2" id="post-tweet">Tweet</button>
               </div>
               <div id="tweets-feed">
-                  <p className="bg-light">feed goes here</p>
+                  {tweets}
               </div>
               
             </div>
