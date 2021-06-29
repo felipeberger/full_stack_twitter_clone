@@ -21,3 +21,14 @@ $.ajaxSetup({
     
       $.ajax(request);
   }
+
+  export function areTheyAuthenticated (successCB, errorCB) {
+    var request = {
+        type: 'GET',
+        url: 'api/authenticated',
+        success: successCB,
+        error: errorCB
+      }
+    
+      $.ajax(request);
+  }
