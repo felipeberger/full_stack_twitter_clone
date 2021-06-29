@@ -1,19 +1,96 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import Header from './header.jsx'
 import LanguageSelect from './languageSelect.jsx'
 import MenuSelect from './homeMenu.jsx'
 
+import { areTheyAuthenticated } from './requests/sessions.js'
+import { createTweet, getTweets } from './requests/tweets.js'
+
 import './home.scss';
 import './general.scss';
+import { type } from 'jquery'
 
 // to be updated with code once backend is connected
-let username = "felipe"
 let tweetsCount = 1
 let followingCount = 0
 let followersCount = 0
 
+// button event handlers
+$(document).off().on('click', '#post-tweet', (e)=>{
+  e.preventDefault()
+  let tweet = $('#tweet-input').val()
+  $('#tweet-input').val('')
+  $('#post-tweet').prop('disabled', true)
+
+  createTweet(tweet, ()=>{
+    $('#post-tweet').prop('disabled', false)
+  }, ()=>{
+    window.alert('something went wrong, try again')
+    $('#post-tweet').prop('disabled', false)
+  })
+})
+
+// functions
+
+const Tweet = (props) => {
+  return (
+    <>
+    <div className='tweet col-12'>
+      <a className='tweet-username' href="">{props.username} <span className="text-secondary tweet-screenName">@{props.username}</span></a>
+      <a className="delete-tweet float-right" href="">Delete</a>
+      <p>{props.message}</p>
+    </div>
+    </>
+    )
+}
+
+const populateTweets = () => {
+
+  var tweets = []
+
+  getTweets((data)=>{
+    tweets = data.tweets.map(function(tweet){
+      return (
+        <Tweet username={tweet.username} message={tweet.message} />
+      )
+    })
+  })
+
+  // tweets.reverse()
+
+  return tweets.reverse()
+
+}
+
+
+// getTweets((data)=>{
+//   console.log(data)
+// })
+
+// if ($('.static_pages.index').length > 0) {
+//   indexTasks(function (response) {
+//     var htmlString = response.tasks.map(function(task) {
+//       return "<div class='col-12 mb-3 p-2 border rounded task clearfix' data-id='" + task.id + "'> \
+//       <input type='checkbox' class='mark-complete mr-2'>" + task.content + "\
+//       <button class='delete rounded float-right " + task.completed + "' data-id='" + task.id + "'>Remove</button></div>";
+//     });
+
+//     $("#tasks").html(htmlString);
+//   });
+// };
+
 const Home = (props) => {
+  const [username, setName] = useState('')
+  
+  useEffect(()=>{
+    areTheyAuthenticated((data)=>{
+      setName(data.username)
+    })
+    console.log(populateTweets)
+
+  })
+
   return (
     <>
     <Header navComponent={<MenuSelect username={username} />} />
