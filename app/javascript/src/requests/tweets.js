@@ -31,3 +31,14 @@ $.ajaxSetup({
     
       $.ajax(request);
   }
+
+  export function deleteTweet (taskId, successCB, errorCB) {
+    var request = {
+        type: 'DELETE',
+        url: `api/tweets/${taskId}`,
+        success: successCB,
+        error: errorCB
+      }
+    
+      $.ajax(request);
+  }

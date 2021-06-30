@@ -5,41 +5,12 @@ import LanguageSelect from './languageSelect.jsx'
 import MenuSelect from './homeMenu.jsx'
 
 import { areTheyAuthenticated } from './requests/sessions.js'
-import { createTweet, getTweets } from './requests/tweets.js'
+import { createTweet, getTweets, deleteTweet } from './requests/tweets.js'
 
 import './home.scss';
 import './general.scss';
-import { type } from 'jquery'
 
-// to be updated with code once backend is connected
-let tweetsCount = 1
-let followingCount = 0
-let followersCount = 0
-
-// button event handlers
-$(document).off().on('click', '#post-tweet', (e)=>{
-  e.preventDefault()
-  let tweet = $('#tweet-input').val()
-
-  if (tweet.length > 0) {
-    $('#tweet-input').val('')
-    $('#post-tweet').prop('disabled', true)
-
-    createTweet(tweet, ()=>{
-      $('#post-tweet').prop('disabled', false)
-      }, ()=>{
-        window.alert('something went wrong, try again')
-        $('#post-tweet').prop('disabled', false)
-    })
-
-  } else {
-    window.alert('empty tweets are not allowed')
-  }
-})
-
-
-
-// functions
+// Tweet component
 
 const Tweet = (props) => {
   return (
@@ -53,27 +24,15 @@ const Tweet = (props) => {
     )
 }
 
-// const PopulateTweets = () => {
-//   const [tweets, setTweets] = useState([])
-
-//   getTweets((data)=>{
-//     setTweets(data.tweets)
-//     tweets.reverse()
-//   })
-
-//   console.log(tweets)
-
-//   // tweets = data.tweets.map((tweet) =>{ })
-
-//   return (
-//     <p>{tweets}</p> 
-//   )
-// }
-
 const Home = (props) => {
   const [username, setName] = useState('')
   const [tweets, setTweets] = useState([])
-  
+  const [tweetsCount, setTweetsCount] = useState(0)
+
+  // no functionality to automatically update these vars
+  let followingCount = 0
+  let followersCount = 0
+
   useEffect(()=>{
     areTheyAuthenticated((data)=>{
       setName(data.username)
@@ -82,18 +41,50 @@ const Home = (props) => {
 
   useEffect(()=>{
     getTweets((data)=>{
-      console.log(data)
       var tweetLength = data.tweets.length
       var tweetsArray = []
 
       for (let i=0; i < tweetLength; i++) {
-        tweetsArray.unshift(<Tweet id={data.tweets[i].id} username={data.tweets[i].username} message={data.tweets[i].message} />)
+        tweetsArray.push(<Tweet id={data.tweets[i].id} key={data.tweets[i].id} username={data.tweets[i].username} message={data.tweets[i].message} />)
       }
 
+      setTweetsCount($('.tweet').length)
       setTweets(tweetsArray)
-      console.log(tweetsArray)
     })
   }, [tweets.length])
+
+
+  // button event listeners handlers
+  $(document).off().on('click', '#post-tweet', (e)=>{
+    e.preventDefault()
+    let tweet = $('#tweet-input').val()
+  
+    if (tweet.length > 0) {
+      $('#tweet-input').val('')
+      $('#post-tweet').prop('disabled', true)
+  
+      createTweet(tweet, ()=>{
+        $('#post-tweet').prop('disabled', false)
+        setTweets(tweets.push(''))
+
+        }, ()=>{
+          window.alert('something went wrong, try again')
+          $('#post-tweet').prop('disabled', false)
+      })
+  
+    } else {
+      window.alert('empty tweets are not allowed')
+    }
+  })
+  
+  $(document).on('click', '.delete-tweet', function (e) {
+    e.preventDefault()
+    var divId = $(this).closest('div').attr('id');
+    
+    deleteTweet(divId, (data)=>{
+      setTweets(tweets.push(''))
+    })
+  })
 
   return (
     <>
