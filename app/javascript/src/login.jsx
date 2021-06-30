@@ -63,22 +63,22 @@ $(document).on('click', '#signup-btn', function (e) {
 
     if (username != '' || email != '' || password != '') {
         createNewUser(username, password, email, (data) => {
-            if (data.success) {
+
+            if (data.user.success) {
                 createSession(username, password, ()=>{
                     location.href = '/home'
-                }, ()=>{
-                    console.log('did not authenticate')
+                }, (data)=>{
+                    console.log('did not authenticate', data)
                 })
-            } else {
+            } else if (data.success == false){
                 $('#signup-username').val('');
                 $('#signup-email').val('');
                 $('#signup-password').val('');
                 window.alert("username or email invalid or already in use")
             }
-                
+
         }, () => {
             console.log("did not work")
-            
         }) 
     } 
 })
