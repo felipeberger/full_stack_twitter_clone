@@ -13,14 +13,18 @@ const Home = (props) => {
   const [username, setName] = useState('')
   const [tweets, setTweets] = useState([])
   const [tweetsCount, setTweetsCount] = useState(0)
+  const [authenticated, setAuthenticated] = useState(false)
 
   // no functionality to automatically update these vars
   let followingCount = 0
   let followersCount = 0
 
+  // ================ lifecycle hooks ======================================
+
   useEffect(()=>{
     areTheyAuthenticated((data)=>{
       setName(data.username)
+      setAuthenticated(true)
     })
   })
 
@@ -37,16 +41,15 @@ const Home = (props) => {
         if (data.tweets[i].username == username) {
           tweetsByUser += 1 
         }
-        
       }
 
       setTweets(tweetsArray)
       setTweetsCount(tweetsByUser)
-
     })
   }, [tweets.length])
 
-  // Tweet component
+  // ================ tweet component ======================================
+
   const Tweet = (props) => {
 
     if (props.username == username) {
@@ -70,10 +73,10 @@ const Home = (props) => {
         </>
         )
     }
-
   }
 
-  // button event handlers
+  // ================ button handlers ======================================
+
   $('#post-tweet').off().on('click', (e)=>{
     e.preventDefault()
     let tweet = $('#tweet-input').val()
@@ -124,6 +127,16 @@ const Home = (props) => {
       location.href = '/'
     })
   })
+
+  $('#logo').on('click', function(e){
+    e.preventDefault()
+
+    if (authenticated) {
+      $('#tweets-feed').children().removeClass('d-none')
+    } 
+  })
+
+  // ================ rendering ======================================
 
   return (
     <>
