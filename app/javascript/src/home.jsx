@@ -1,27 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import ReactDOM, { render } from 'react-dom'
 import Header from './header.jsx'
-import LanguageSelect from './languageSelect.jsx'
 import MenuSelect from './homeMenu.jsx'
 
-import { areTheyAuthenticated } from './requests/sessions.js'
-import { createTweet, getTweets, deleteTweet, getUserTweets } from './requests/tweets.js'
+import { areTheyAuthenticated, deleteSession } from './requests/sessions.js'
+import { createTweet, getTweets, deleteTweet } from './requests/tweets.js'
 
 import './home.scss';
 import './general.scss';
-
-// Tweet component
-const Tweet = (props) => {
-  return (
-    <>
-    <div className={`tweet col-12 pt-2 border top border bottom bg-light ${props.username}`} id={props.id}>
-      <a className={`tweet-username ${props.username}`} href="">{props.username} <span className="text-secondary tweet-screenName">@{props.username}</span></a>
-      <a className="delete-tweet float-right" href="">Delete</a>
-      <p className="pt-1">{props.message}</p>
-    </div>
-    </>
-    )
-}
 
 const Home = (props) => {
   const [username, setName] = useState('')
@@ -45,8 +31,13 @@ const Home = (props) => {
       var tweetsByUser = 0
 
       for (let i=0; i < tweetArrayLength; i++) {
+
         tweetsArray.push(<Tweet id={data.tweets[i].id} key={data.tweets[i].id} username={data.tweets[i].username} message={data.tweets[i].message} />)
-        tweetsByUser += 1
+
+        if (data.tweets[i].username == username) {
+          tweetsByUser += 1 
+        }
+        
       }
 
       setTweets(tweetsArray)
@@ -55,8 +46,34 @@ const Home = (props) => {
     })
   }, [tweets.length])
 
+  // Tweet component
+  const Tweet = (props) => {
 
-  // button event listeners handlers
+    if (props.username == username) {
+      return (
+        <>
+        <div className={`tweet col-12 pt-2 border top border bottom bg-light ${props.username}`} id={props.id}>
+          <a className={`tweet-username ${props.username}`} href="">{props.username} <span className="text-secondary tweet-screenName">@{props.username}</span></a>
+          <a className="delete-tweet float-right" href="">Delete</a>
+          <p className="pt-1">{props.message}</p>
+        </div>
+        </>
+        )
+
+    } else {
+      return (
+        <>
+        <div className={`tweet col-12 pt-2 border top border bottom bg-light ${props.username}`} id={props.id}>
+          <a className={`tweet-username ${props.username}`} href="">{props.username} <span className="text-secondary tweet-screenName">@{props.username}</span></a>
+          <p className="pt-1">{props.message}</p>
+        </div>
+        </>
+        )
+    }
+
+  }
+
+  // button event handlers
   $('#post-tweet').off().on('click', (e)=>{
     e.preventDefault()
     let tweet = $('#tweet-input').val()
@@ -91,13 +108,20 @@ const Home = (props) => {
   $('#user-tweets').on('click', function (e) {
     e.preventDefault()
     var allTweets = $('#tweets-feed').children()
-    console.log(username, typeof(username))
 
     allTweets.each(function (){
       if ($(this).hasClass(username) == false) {
 
         $(this).addClass('d-none')
       }
+    })
+  })
+
+  $('#logout').on('click', function (e) {
+    e.preventDefault()
+    deleteSession((data)=>{
+      console.log(data)
+      location.href = '/'
     })
   })
 

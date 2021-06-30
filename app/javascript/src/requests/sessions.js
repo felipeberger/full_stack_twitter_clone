@@ -32,3 +32,14 @@ $.ajaxSetup({
     
       $.ajax(request);
   }
+
+  export function deleteSession (successCB, errorCB) {
+    var request = {
+        type: 'DELETE',
+        url: 'api/sessions',
+        success: successCB,
+        error: errorCB
+      }
+    
+      $.ajax(request);
+  }

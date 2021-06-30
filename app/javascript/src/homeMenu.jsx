@@ -17,7 +17,7 @@ const MenuSelect = (props) => {
                 <button className="dropdown-item" type="button">Keyboard Shortcuts</button>
                 <hr />
                 <button className="dropdown-item" type="button">Settings</button>
-                <button className="dropdown-item" type="button">Log Out</button>
+                <button className="dropdown-item" type="button" id="logout">Log Out</button>
             </div>
         </div>
         </>
