@@ -32,6 +32,17 @@ $.ajaxSetup({
       $.ajax(request);
   }
 
+  export function getUserTweets (username, successCB, errorCB) {
+    var request = {
+        type: 'GET',
+        url: `api/users/${username}/tweets`,
+        success: successCB,
+        error: errorCB
+      }
+    
+      $.ajax(request);
+  }
+
   export function deleteTweet (taskId, successCB, errorCB) {
     var request = {
         type: 'DELETE',
@@ -42,3 +53,4 @@ $.ajaxSetup({
     
       $.ajax(request);
   }
+  

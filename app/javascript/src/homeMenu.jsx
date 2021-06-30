@@ -9,7 +9,7 @@ const MenuSelect = (props) => {
 
 
             <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <button className="dropdown-item" type="button">{props.username}</button>
+                <button className="dropdown-item" type="button" id="user-tweets">{props.username}</button>
                 <hr />
                 <button className="dropdown-item" type="button">Lists</button>
                 <hr />

@@ -5,18 +5,17 @@ import LanguageSelect from './languageSelect.jsx'
 import MenuSelect from './homeMenu.jsx'
 
 import { areTheyAuthenticated } from './requests/sessions.js'
-import { createTweet, getTweets, deleteTweet } from './requests/tweets.js'
+import { createTweet, getTweets, deleteTweet, getUserTweets } from './requests/tweets.js'
 
 import './home.scss';
 import './general.scss';
 
 // Tweet component
-
 const Tweet = (props) => {
   return (
     <>
-    <div className='tweet col-12 pt-2 border top border bottom bg-light' id={props.id}>
-      <a className='tweet-username' href="">{props.username} <span className="text-secondary tweet-screenName">@{props.username}</span></a>
+    <div className={`tweet col-12 pt-2 border top border bottom bg-light ${props.username}`} id={props.id}>
+      <a className={`tweet-username ${props.username}`} href="">{props.username} <span className="text-secondary tweet-screenName">@{props.username}</span></a>
       <a className="delete-tweet float-right" href="">Delete</a>
       <p className="pt-1">{props.message}</p>
     </div>
@@ -41,21 +40,24 @@ const Home = (props) => {
 
   useEffect(()=>{
     getTweets((data)=>{
-      var tweetLength = data.tweets.length
+      var tweetArrayLength = data.tweets.length
       var tweetsArray = []
+      var tweetsByUser = 0
 
-      for (let i=0; i < tweetLength; i++) {
+      for (let i=0; i < tweetArrayLength; i++) {
         tweetsArray.push(<Tweet id={data.tweets[i].id} key={data.tweets[i].id} username={data.tweets[i].username} message={data.tweets[i].message} />)
+        tweetsByUser += 1
       }
 
-      setTweetsCount($('.tweet').length)
       setTweets(tweetsArray)
+      setTweetsCount(tweetsByUser)
+
     })
   }, [tweets.length])
 
 
   // button event listeners handlers
-  $(document).off().on('click', '#post-tweet', (e)=>{
+  $('#post-tweet').off().on('click', (e)=>{
     e.preventDefault()
     let tweet = $('#tweet-input').val()
   
@@ -76,13 +78,26 @@ const Home = (props) => {
       window.alert('empty tweets are not allowed')
     }
   })
-  
-  $(document).on('click', '.delete-tweet', function (e) {
+
+  $('.delete-tweet').on('click', function (e) {
     e.preventDefault()
     var divId = $(this).closest('div').attr('id');
     
     deleteTweet(divId, (data)=>{
       setTweets(tweets.push(''))
+    })
+  })
+
+  $('#user-tweets').on('click', function (e) {
+    e.preventDefault()
+    var allTweets = $('#tweets-feed').children()
+    console.log(username, typeof(username))
+
+    allTweets.each(function (){
+      if ($(this).hasClass(username) == false) {
+
+        $(this).addClass('d-none')
+      }
     })
   })
 
