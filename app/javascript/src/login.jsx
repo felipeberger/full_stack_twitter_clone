@@ -50,9 +50,6 @@ setInterval(()=>{
     
 }, 12000);
 
-// functions 
-
-
 // button listeners / event handlers
 
 $(document).on('click', '#signup-btn', function (e) {
@@ -101,8 +98,6 @@ $(document).on('click', '#login-btn', function (e) {
             console.log('did not authenticate')
         })
     } 
-
-    // console.log(createSession(username, password))
 })
 
 const Login = (props) => {

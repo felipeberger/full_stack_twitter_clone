@@ -56,7 +56,7 @@ const Home = (props) => {
       return (
         <>
         <div className={`tweet col-12 pt-2 border top border bottom bg-light ${props.username}`} id={props.id}>
-          <a className={`tweet-username ${props.username}`} href="">{props.username} <span className="text-secondary tweet-screenName">@{props.username}</span></a>
+          <a className={`tweet-username text-dark ${props.username}`} href="">{props.username}</a><span className="text-secondary tweet-screenName"> @{props.username}</span>
           <a className="delete-tweet float-right" href="">Delete</a>
           <p className="pt-1">{props.message}</p>
         </div>
@@ -67,7 +67,7 @@ const Home = (props) => {
       return (
         <>
         <div className={`tweet col-12 pt-2 border top border bottom bg-light ${props.username}`} id={props.id}>
-          <a className={`tweet-username ${props.username}`} href="">{props.username} <span className="text-secondary tweet-screenName">@{props.username}</span></a>
+          <a className={`tweet-username text-dark ${props.username}`} href="">{props.username}</a><span className="text-secondary tweet-screenName"> @{props.username}</span>
           <p className="pt-1">{props.message}</p>
         </div>
         </>
