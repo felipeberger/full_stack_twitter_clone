@@ -17,5 +17,7 @@
 
 // console.log('Hello World from Webpacker')
 
-import 'bootstrap/dist/css/bootstrap'
+// import 'bootstrap/dist/css/bootstrap'
+
+import '../src/bootstrap.scss'
 
