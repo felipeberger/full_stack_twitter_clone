@@ -136,6 +136,21 @@ const Home = (props) => {
     } 
   })
 
+  $('#image-btn').on('click', function(){
+    $('#image-select').trigger('click');
+  })
+
+  $('#image-select').on('click', function(e){
+    // console.log(e.prop('files')[0])
+    // console.log(e)
+    let filelist = $('#image-select')[0].files
+
+    console.log(filelist, filelist.item(0))
+    
+
+    // $('image-preview').attr('src', )
+  })
+
   // ================ rendering ======================================
 
   return (
@@ -146,6 +161,9 @@ const Home = (props) => {
 
       <div className="main container pt-4">
         <div className="row">
+
+          {/* ======= sidebar ======== */}
+
           <div className="col-3" id="sidebar">
             <div className="bg-light rounded pl-2 pt-2 mb-3">
               <a className="font-weight-bold text-dark" href=""><h5 className="">{username}</h5></a>
@@ -176,18 +194,22 @@ const Home = (props) => {
               </div>
             </div>
           </div>
+
+          {/* ======= tweet input and feed  ======== */}
+
           <div className="col-6 feed rounded pt-2">
             <div className="rounded">
               <textarea className="form-control" id="tweet-input" cols="30" rows="2"></textarea>
-              <div className="text-right">                
-                <button className="rounded border-0 bg-transparent mr-3 font-weight-bold">Upload image</button>
+              <div className="text-right">  
+                <button className="rounded border-0 bg-transparent mr-3 font-weight-bold" id="image-btn">Upload image</button>
+                <input className="d-none" type="file" id="image-select" name="image" accept="image/*" />
+                <img id="image-preview" src="" />
                 <span className="letter-count font-weight-light">140</span>
                 <button className="rounded btn-primary px-2 ml-3 mr-2 my-2" id="post-tweet">Tweet</button>
               </div>
               <div id="tweets-feed">
                   {tweets}
               </div>
-              
             </div>
           </div>
           <div className="col-3">
