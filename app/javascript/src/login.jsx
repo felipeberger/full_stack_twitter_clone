@@ -60,13 +60,16 @@ $(document).on('click', '#signup-btn', function (e) {
 
     if (username != '' || email != '' || password != '') {
         createNewUser(username, password, email, (data) => {
-
-            if (data.user.success) {
-                createSession(username, password, ()=>{
-                    location.href = '/home'
-                }, (data)=>{
-                    console.log('did not authenticate', data)
-                })
+            console.log(data)
+            if (data.hasOwnProperty('user')) {
+                if (data.user.success) {
+                    console.log("got past data.user")
+                    createSession(username, password, ()=>{
+                        location.href = '/home'
+                    }, (data)=>{
+                        console.log('did not authenticate', data)
+                    })
+                }
             } else if (data.success == false){
                 $('#signup-username').val('');
                 $('#signup-email').val('');
