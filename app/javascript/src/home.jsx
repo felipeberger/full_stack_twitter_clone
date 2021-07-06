@@ -14,6 +14,7 @@ const Home = (props) => {
   const [tweets, setTweets] = useState([])
   const [tweetsCount, setTweetsCount] = useState(0)
   const [authenticated, setAuthenticated] = useState(false)
+  const [characterCount, setCount] = useState(140)
 
   // no functionality to automatically update these vars
   let followingCount = 0
@@ -75,13 +76,13 @@ const Home = (props) => {
     }
   }
 
-  // ================ button handlers ======================================
+  // ================ event handlers ======================================
 
   $('#post-tweet').off().on('click', (e)=>{
     e.preventDefault()
     let tweet = $('#tweet-input').val()
   
-    if (tweet.length > 0) {
+    if (tweet.length > 0 && tweet.length <= 140) {
       $('#tweet-input').val('')
       $('#post-tweet').prop('disabled', true)
   
@@ -95,7 +96,11 @@ const Home = (props) => {
       })
   
     } else {
-      window.alert('empty tweets are not allowed')
+      if (tweet.length == 0) {
+        window.alert('empty tweets are not allowed')
+      } else {
+        window.alert('your tweet is longer than 140 characters')
+      }
     }
   })
 
@@ -136,19 +141,21 @@ const Home = (props) => {
     } 
   })
 
-  $('#image-btn').on('click', function(){
-    $('#image-select').trigger('click');
+  // WiP implementation of image upload handler
+
+  $(document).on('click', '#image-select', function() {
+    var formData = new FormData();
+    var image = document.getElementById('image-select').files;
+
+    if (image.length > 0) {
+      $('image-preview').attr('src', image[0].name)
+      console.log(image[0])
+    }
+
   })
-
-  $('#image-select').on('click', function(e){
-    // console.log(e.prop('files')[0])
-    // console.log(e)
-    let filelist = $('#image-select')[0].files
-
-    console.log(filelist, filelist.item(0))
-    
-
-    // $('image-preview').attr('src', )
+  
+  $('#tweet-input').on('keyup', function(){
+    setCount(140 - $('#tweet-input').val().length)
   })
 
   // ================ rendering ======================================
@@ -201,10 +208,11 @@ const Home = (props) => {
             <div className="rounded">
               <textarea className="form-control" id="tweet-input" cols="30" rows="2"></textarea>
               <div className="text-right">  
-                <button className="rounded border-0 bg-transparent mr-3 font-weight-bold" id="image-btn">Upload image</button>
+                {/* <button className="rounded border-0 bg-transparent mr-3 font-weight-bold" id="image-btn">Upload image</button> */}
+                <label className="mr-3 font-weight-bold" htmlFor="image-select">Upload image</label>
                 <input className="d-none" type="file" id="image-select" name="image" accept="image/*" />
                 <img id="image-preview" src="" />
-                <span className="letter-count font-weight-light">140</span>
+                <span className="letter-count font-weight-light" id="character-count">{characterCount}</span>
                 <button className="rounded btn-primary px-2 ml-3 mr-2 my-2" id="post-tweet">Tweet</button>
               </div>
               <div id="tweets-feed">
