@@ -126,47 +126,51 @@ const Login = (props) => {
 
                     <div className="col-3 bg-transparent rounded">
                         <div className="row bg-white rounded">
-                            <form>
-                                <div className="form-group rounded pt-3">
-                                    <div className="row pb-2">
-                                        <div className="col-12">
-                                            <input type="text" className="form-control" 
-                                            id="login-username"
-                                            placeholder="Username" />
+                            <div className="col-12">
+                                <form>
+                                    <div className="form-group rounded pt-3">
+                                        <div className="row pb-2">
+                                            <div className="col-12">
+                                                <input type="text" className="form-control" 
+                                                id="login-username"
+                                                placeholder="Username" />
+                                            </div>
+                                        </div>                        
+                                        <div className="row">
+                                            <div className="col-8">
+                                                <input type="password" className="form-control" id="login-password" placeholder="Password" />
+                                            </div>
+                                            <div className="col-4">
+                                                <button type="submit" className="btn btn-primary float-right ml-5" id="login-btn">Log In</button>
+                                            </div>                
                                         </div>
-                                    </div>                        
-                                    <div className="row">
-                                        <div className="col-8">
-                                            <input type="password" className="form-control" id="login-password" placeholder="Password" />
+                                        <div className="row pt-2">
+                                            <div className="col-12">
+                                                <div className="form-check">
+                                                    <input type="checkbox" className="form-check-input" id="rememberMe" />
+                                                    <label className="form-check-label" htmlFor="rememberMe"><small>Remember me</small></label>
+                                                    <small className="d-inline"> · <a href="">Forgot password?</a></small>
+                                                </div>                                            
+                                            </div>
                                         </div>
-                                        <div className="col-4">
-                                            <button type="submit" className="btn btn-primary float-right ml-5" id="login-btn">Log In</button>
-                                        </div>                
                                     </div>
-                                    <div className="row pt-2">
-                                        <div className="col-12">
-                                            <div className="form-check">
-                                                <input type="checkbox" className="form-check-input" id="rememberMe" />
-                                                <label className="form-check-label" htmlFor="rememberMe"><small>Remember me</small></label>
-                                                <small className="d-inline"> · <a href="">Forgot password?</a></small>
-                                            </div>                                            
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
 
                         <div className="row bg-white rounded mt-4 pb-3">
-                            <form>
-                                <div className="form-group rounded pt-3">
-                                    <p><strong>New to Twitter?</strong><span className="text-secondary"> Sign up</span></p>
-                                    <input type="text" className="form-control mb-2" id="signup-username" placeholder="Username" />
-                                    <input type="email" className="form-control mb-2" id="signup-email" placeholder="Email" />
-                                    <input type="password" className="form-control mb-2" id="signup-password" placeholder="Password" />
-                                    <button type="submit" className="btn rounded float-right" id="signup-btn"><strong>Sign up for Twitter</strong></button>
-                                        
-                                </div>
-                            </form>
+                            <div className="col-12">
+                                <form>
+                                    <div className="form-group rounded pt-3">
+                                        <p><strong>New to Twitter?</strong><span className="text-secondary"> Sign up</span></p>
+                                        <input type="text" className="form-control mb-2" id="signup-username" placeholder="Username" />
+                                        <input type="email" className="form-control mb-2" id="signup-email" placeholder="Email" />
+                                        <input type="password" className="form-control mb-2" id="signup-password" placeholder="Password" />
+                                        <button type="submit" className="btn rounded float-right" id="signup-btn"><strong>Sign up for Twitter</strong></button>
+                                            
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                     
