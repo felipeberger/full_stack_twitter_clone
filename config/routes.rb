@@ -19,5 +19,6 @@ Rails.application.routes.draw do
   end
 
   get 'home' => 'static_pages#home'
-  get '*' => 'static_pages#login'
+  get 'login' => 'static_pages#login'
+  get '*path' => 'static_pages#login'
 end
