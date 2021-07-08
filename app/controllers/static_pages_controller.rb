@@ -8,8 +8,9 @@ class StaticPagesController < ApplicationController
       @user = session.user
       render 'home'
     else
-      render 'login'
+      redirect_to '/'
     end
 
   end
+
 end
